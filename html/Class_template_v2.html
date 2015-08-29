@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Level 9 Spell list from JSON file</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Peter Galuardi">
+	<link rel="stylesheet" type="text/css" href="../css/SpellList.css">
+	<link rel="stylesheet" type="text/css" href="../css/grid.css">
+	<link rel="stylesheet" type="text/css" href="../css/icons.css">
+
+</head>
+<body>
+	<div id="Header" class="header">
+		<div class="col-6">
+			<h1 class=""><span id="PlayerClass"></span><span id="Level"></span> Spells</h1>
+		</div>
+		<div class="col-6">
+			<input type="text" id="myText" value=""><button class="searchbutton" onclick="SearchSpells()">Search</button>	
+		</div>
+	</div>
+	
+	<div id="SideNav" class="col-3">
+		<div id="Navigation" class="menu">
+			<button onclick="SetTitle(0);foo();DisplaySpells(all_spells);SetPlayerClass(7);">Level 0</button>
+			<button onclick="SetTitle(1);foo();DisplaySpells(all_spells);SetPlayerClass(7);">Level 1</button>
+			<button onclick="SetTitle(2);foo();DisplaySpells(all_spells);SetPlayerClass(7);">Level 2</button>
+			<button onclick="SetTitle(3);foo();DisplaySpells(all_spells);SetPlayerClass(7);">Level 3</button>
+			<button onclick="SetTitle(4);foo();DisplaySpells(all_spells);SetPlayerClass(7);">Level 4</button>
+			<button onclick="SetTitle(5);foo();DisplaySpells(all_spells);SetPlayerClass(7);">Level 5</button>
+			<button onclick="SetTitle(6);foo();DisplaySpells(all_spells);SetPlayerClass(7);">Level 6</button>
+			<button onclick="SetTitle(7);foo();DisplaySpells(all_spells);SetPlayerClass(7);">Level 7</button>
+			<button onclick="SetTitle(8);foo();DisplaySpells(all_spells);SetPlayerClass(7);">Level 8</button>
+			<button onclick="SetTitle(9);foo();SetPlayerClass(7); DisplayAsModal(all_spells)">Level 9</button>
+		</div>
+		<div id="Legend" class="Legend">
+			<ul class="col-6">
+				<li>
+					<span class="icon-Abjuration"></span>Abjuration
+				</li>
+				<li>
+					<span class="icon-Conjuration"></span>Conjuration
+				</li>
+				<li>
+					<span class="icon-Divination"></span>Divination
+				</li>
+				<li>
+					<span class="icon-Enchantment"></span>Enchantment
+				</li>
+				<li>
+					<span class="icon-Evocation"></span>Evocation
+				</li>
+				
+			</ul>
+			<ul class="col-6">
+				<li>
+					<span class="icon-Illusion"></span>Illusion
+				</li>
+				<li>
+					<span class="icon-Necromancy"></span>Necromancy
+				</li>
+				<li>
+					<span class="icon-Ritual"></span>Ritual
+				</li>
+				<li>
+					<span class="icon-Transmutation"></span>Transmutation
+				</li>
+				<li>
+					
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="MainPane" class="col-9 MainPane">
+		<div id="ClassFilter" class="col-12 Filter">
+			<button onclick="DisplayAsModal(all_spells);SetPlayerClass(7);foo();">All</button>
+			<button onclick="DisplayClassSpells(bard, all_spells);SetPlayerClass(0);foo();">Bard</button>
+			<button onclick="DisplayClassSpells(cleric, all_spells);SetPlayerClass(1);foo();">Cleric</button>
+			<button onclick="DisplayClassSpells(druid, all_spells);SetPlayerClass(2);foo();">Druid</button>
+			<button onclick="DisplayClassSpells(ranger, all_spells);SetPlayerClass(3);foo();">Ranger</button>
+			<button onclick="DisplayClassSpells(sorcerer, all_spells);SetPlayerClass(4);foo();">Sorcerer</button>
+			<button onclick="DisplayClassSpells(warlock, all_spells);SetPlayerClass(5);foo();">Warlock</button>
+			<button onclick="DisplayClassSpells(wizard, all_spells);SetPlayerClass(6);foo();">Wizard</button>
+			
+		</div>
+		
+		<a onclick="SpellModalView('')" href="#openModal">Open Modal</a>
+
+		<div id="openModal" class="modalDialog">
+		    <div>	<a href="#close" title="Close" class="close">x</a>
+
+		        	<h2 id="ModalHeader">Spell Title</h2>
+	                 <span id="ModalBody">
+	                          <p>Spell Description goes here</p>
+	                 </span>                 
+		    </div>
+		</div>
+	
+		<div id="SpellList" class="col-12"></div>
+	</div>
+	
+	<script type="text/Javascript">
+	/*==New JS ==*/
+
+	
+	var level = { 
+		num: 0
+	};
+	
+	function SetLevel(n){
+		level.num = n;
+	};
+	
+	function SetPlayerClass (v){
+		var classId = ['Bard','Cleric', 'Druid','Ranger','Sorcerer','Warlock','Wizard','']
+		document.getElementById("PlayerClass").innerHTML = classId[v]+' ';
+	};
+	
+	function SetTitle (n){	//changes header title
+		SetLevel (n);
+		if(level.num===0){
+			document.getElementById("Level").innerHTML='Cantrip';
+			return
+		};
+		document.getElementById("Level").innerHTML='Level '+level.num;
+	};
+	function foo(){ //outputs the level to the console to check for a match with the title
+		console.log(level.num);
+	}
+	
+	
+	function DisplaySpells(spells) {  /* =====output as a column of cards=========== */
+		var out ="";
+		var i;
+		for (i=0; i< spells.length; i++){
+			if(level.num == spells[i].spell_level){
+               	out += '<div class="Spell Card col-12" id="'+spells[i].ID+'">'+
+				'<h1>'+spells[i].name+'<span class="icon-'+spells[i].school+' Icon"></span></h1>'+
+				'<p>'+
+				'Casting Time: '+ spells[i].cast_time + '<br>'+
+				'Range: '+ spells[i].range + '<br>'+
+				'Components: '+ spells[i].components + '<br>'+
+				'Duration: '+ spells[i].duration+ '<br>'+
+				'Description: '+ spells[i].description+'</p>'+
+				'</div>';} 
+                
+			}
+		if (out==""){
+			out="<p>No spells to display</p>";
+		};
+		document.getElementById("SpellList").innerHTML=out;
+		}
+        
+	function DisplayAsModal(spells) { /* =====output as a modalWindow =========== */
+            var out ="";
+            var i;
+            for (i=0; i< spells.length; i++){
+                if(level.num == spells[i].spell_level){
+                    out += '<div class="Spell Card col-12" id="'+spells[i].ID+'">'+
+                    '<h1>'+spells[i].name+'<span class="icon-'+spells[i].school+' Icon"></span></h1>'+
+                    '<p>'+
+                    'Casting Time: '+ spells[i].cast_time + '<br>'+
+                    'Range: '+ spells[i].range + '<br>'+
+                    'Components: '+ spells[i].components + '<br>'+
+                    'Duration: '+ spells[i].duration+ '<br>'+
+                    '<a class=\"linktomodal\"onclick="SpellModalView('+'\'' +spells[i].name+ '\''+ ')" href="#openModal">'+
+                    'Description</a>'+
+                    '<span class=\"fulldescription\">'+
+                    'Description: '+ spells[i].description + '</span>'+
+                    '</p></div>';} 
+                                    
+                   /* out +='<a onclick="SpellModalView('+'\'' +spells[i].name+ '\''+ ')" href="#openModal">'+
+                        '<h1>'+spells[i].name+'<span class="icon-' +spells[i].school+ ' Icon"></span></h1></a>';*/
+                
+                        
+                if (out==""){
+                out="<p>No spells to display</p>";
+                    };
+                document.getElementById("SpellList").innerHTML=out;
+                };
+        }	
+        
+	function DisplaySchoolSpells(school,spells) {
+		var out ="";
+		var i;
+		for (i=0; i< spells.length; i++){
+			if(level.num == spells[i].spell_level && school==spells[i].school){
+				out += '<div class="Spell Card col-12" id="'+spells[i].ID+'">'+
+				'<h1>'+spells[i].name+'<span class="icon-'+spells[i].school+' Icon"></span></h1>'+
+				'<p>'+
+				'Casting Time: '+ spells[i].cast_time + '<br>'+
+				'Range: '+ spells[i].range + '<br>'+
+				'Components: '+ spells[i].components + '<br>'+
+				'Duration: '+ spells[i].duration+ '<br>'+
+				'Description: '+ spells[i].description+'</p>'+
+				'</div>';}
+			}
+		if (out==""){
+			out="<p>No spells to display</p>";
+		};
+		document.getElementById("SpellList").innerHTML=out;
+		}
+	
+	function DisplayClassSpells(name, spells) {
+		var out ="";
+		var i;
+		var j;
+		for (i=0; i< name.length; i++){
+				for (j=0; j<spells.length; j++){
+					if (name[i].name == spells[j].name && level.num == name[i].spell_level){
+						out += '<div class="Spell Card col-12" id="'+spells[j].ID+'">'+
+						'<h1>'+spells[j].name+'<span class="icon-'+spells[j].school+' Icon"></span></h1>'+
+						'<p>'+
+						'Casting Time: '+ spells[j].cast_time + '<br>'+
+						'Range: '+ spells[j].range + '<br>'+
+						'Components: '+ spells[j].components + '<br>'+
+						'Duration: '+ spells[j].duration+ '<br>'+
+						'Description: '+ spells[j].description+'</p>'+
+						'</div>';
+					}
+				}
+		}
+		if (out==""){
+			out="<p>No spells to display</p>";
+		}
+		document.getElementById("SpellList").innerHTML=out;
+	}
+	
+    function SpellModalView(name){
+        var i;
+        for (i=0; i < all_spells.length; i++){
+            if (all_spells[i].name==name){
+                document.getElementById('ModalHeader').innerHTML = all_spells[i].name;
+                document.getElementById('ModalBody').innerHTML = '<p>'+
+                /* 'Casting Time: '+ all_spells[i].cast_time + '<br>'+
+                'Range: '+ all_spells[i].range + '<br>'+
+                'Components: '+ all_spells[i].components + '<br>'+
+                'Duration: '+ all_spells[i].duration+ '<br>'+*/
+                'Description: '+ all_spells[i].description+'</p>';
+            };
+        };
+    }
+
+
+	function SearchSpells() {
+	    var x = document.getElementById("myText").value;
+		console.log(x);
+		var i;
+		var out ="";
+        for (i=0; i < all_spells.length; i++){
+	/* exact match : all_spells[i].name.toLowerCase()==x.toLowerCase() */ 
+	
+            if (all_spells[i].name.toLowerCase().search(x.toLowerCase()) >=0){
+                out += '<div class="Spell Card col-12" id="'+all_spells[i].ID+'">'+
+				'<h1>'+all_spells[i].name+'<span class="icon-'+all_spells[i].school+' Icon"></span></h1>'+
+				'<p>'+
+				'Casting Time: '+ all_spells[i].cast_time + '<br>'+
+				'Range: '+ all_spells[i].range + '<br>'+
+				'Components: '+ all_spells[i].components + '<br>'+
+				'Duration: '+ all_spells[i].duration+ '<br>'+
+				'Description: '+ all_spells[i].description+'</p>'+
+				'</div>';}
+            }
+			if (out==""){
+				out="<p>No spells to display</p>";
+			}
+	    document.getElementById("SpellList").innerHTML = out;
+		document.getElementById("myText").value = "";
+	}
+	</script>
+	
+	
+	<script type="text/Javascript" src="../javascript/test.js"></script>
+	<script type="text/Javascript" src="../javascript/class_spell_list.js"></script>
+
+	
+	<script>
+	/*==Old JS ==
+	function DisplayClassSpells(classSpells, allSpells) {
+		var out ="";
+		var i;
+		var j;
+		for (i=0; i< classSpells.length; i++){
+			for (j=0;j<allSpells.length; j++){
+				if (classSpells[i].name == allSpells[j].name){
+					out += '<div class="Spell Card col-12" id="'+allSpells[j].ID+'">'+
+					'<h1>'+allSpells[j].name+'<span class="icon-'+allSpells[j].school+' Icon"></span></h1>'+
+					'<p>'+
+					'Casting Time: '+ allSpells[j].cast_time + '<br>'+
+					'Range: '+ allSpells[j].range + '<br>'+
+					'Components: '+ allSpells[j].components + '<br>'+
+					'Duration: '+ allSpells[j].duration+ '<br>'+
+					'Description: '+ allSpells[j].description+'</p>'+
+					'</div>';
+				}
+			}
+		}
+		document.getElementById("SpellList").innerHTML=out;
+	}
+
+	
+
+	function SetLevel(n){
+		var out="";
+		var t = typeof n;
+		var y = typeof out;
+		if(t!=y){
+			out += 'Level '+n;
+			document.getElementById("Level").innerHTML=out;
+		}
+		if(t==y){
+			document.getElementById("Level").innerHTML=n;
+		}
+	}
+
+	function DisplayClassName(classes){
+		if(classes==""){
+			var out = '';
+			document.getElementById("ClassName").innerHTML=out;
+		}
+		var out = classes+' ';
+		document.getElementById("ClassName").innerHTML=out;
+	}	
+
+	function DisplaySpells(spells) {
+		var out ="";
+		var i;
+		for (i=0; i< spells.length; i++){
+			out += '<div class="Spell Card col-12" id="'+spells[i].ID+'">'+
+			'<h1>'+spells[i].name+'<span class="icon-'+spells[i].school+' Icon"></span></h1>'+
+			'<p>'+
+			'Casting Time: '+ spells[i].cast_time + '<br>'+
+			'Range: '+ spells[i].range + '<br>'+
+			'Components: '+ spells[i].components + '<br>'+
+			'Duration: '+ spells[i].duration+ '<br>'+
+			'Description: '+ spells[i].description+'</p>'+
+			'</div>';
+			}
+		document.getElementById("SpellList").innerHTML=out;
+		}
+
+	function SetClassSpell(className){
+		DisplayClassName(className);
+		var level = document.getElementById("Level");
+		//alert(level.innerHTML);
+		var m = level.innerHTML.split(" ");
+		level = m[1];
+		var levelname=NumberToName(level);
+		console.log(levelname);
+		allSpellList = 'level'+levelname+'Spells';
+		console.log('allSpellList='+allSpellList);
+		var classSpellList = className.toLowerCase();
+		classSpellList += 'Level'+levelname;
+		console.log('classSpellList='+classSpellList);
+		DisplayClassSpells(classSpellList, allSpellList);
+	}
+
+
+	function NumberToName(n){
+		var num="";
+		if(n==1){num="One"};
+		if(n==2){num="Two"};
+		if(n==9){num="Nine"};
+		return num;
+	} */
+	</script> 
+
+</body>
+</html>

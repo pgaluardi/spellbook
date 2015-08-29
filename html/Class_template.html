@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Level 9 Spell list from JSON file</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Peter Galuardi">
+	<link rel="stylesheet" type="text/css" href="../css/SpellList.css">
+	<link rel="stylesheet" type="text/css" href="../css/grid.css">
+	<link rel="stylesheet" type="text/css" href="../css/icons.css">
+	<script src="level9_class_list.js"></script>
+	<script src="class_names.js"></script>
+	<script src="level_9_spells.js"></script>
+	<script src="cantrip_spells.js"></script>
+</head>
+<body>
+	<div id="Header" class="header">
+	<h1><span id="ClassName"></span><span id="Level"></span> Spells</h1>	
+	</div>
+	
+	<div id="SideNav" class="col-3">
+		<div id="Navigation" class="menu">
+			<ul>
+					<button onclick="DisplaySpells(cantripAll);SetLevel('Cantrip');">Cantrips</button>
+					<a href="AllLevel1.html"><li>Level 1</li></a>
+					<a href="AllLevel2.html"><li>Level 2</li></a>
+					<a href="AllLevel3.html"><li>Level 3</li></a>
+					<a href="AllLevel4.html"><li>Level 4</li></a>
+					<a href="AllLevel5.html"><li>Level 5</li></a>
+					<a href="AllLevel6.html"><li>Level 6</li></a>
+					<a href="AllLevel7.html"><li>Level 7</li></a>
+					<a href="AllLevel8.html"><li>Level 8</li></a>
+					<button onclick="DisplaySpells(levelNineSpells);SetLevel(9);">Level 9</button>
+			</ul>
+		</div>
+		<div id="Legend" class="Legend">
+			<ul class="col-6">
+				<li>
+					<span class="icon-Abjuration"></span>Abjuration
+				</li>
+				<li>
+					<span class="icon-Conjuration"></span>Conjuration
+				</li>
+				<li>
+					<span class="icon-Divination"></span>Divination
+				</li>
+				<li>
+					<span class="icon-Enchantment"></span>Enchantment
+				</li>
+				<li>
+					<span class="icon-Evocation"></span>Evocation
+				</li>
+				
+			</ul>
+			<ul class="col-6">
+				<li>
+					<span class="icon-Illusion"></span>Illusion
+				</li>
+				<li>
+					<span class="icon-Necromancy"></span>Necromancy
+				</li>
+				<li>
+					<span class="icon-Ritual"></span>Ritual
+				</li>
+				<li>
+					<span class="icon-Transmutation"></span>Transmutation
+				</li>
+				<li>
+					
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="MainPane" class="col-9 MainPane">
+		<div id="ClassFilter" class="col-12 Filter">
+			<button type="button" onclick="DisplaySpells(levelNineSpells);DisplayClassName(noclass);">All</button>
+			<button type="button" onclick="DisplayClassSpells(bardLevelNine,levelNineSpells);DisplayClassName(bard);">Bard</button>
+			<button type="button"  onclick="DisplayClassSpells(clericLevelNine,levelNineSpells);DisplayClassName(cleric);">Cleric</button>
+			<button type="button"  onclick="DisplayClassSpells(druidLevelNine,levelNineSpells);DisplayClassName(druid);">Druid</button>
+			<button type="button"  onclick="DisplayClassSpells(sorcererLevelNine,levelNineSpells);DisplayClassName(sorcerer);">Sorcerer</button>
+			<button type="button"  onclick="DisplayClassSpells(warlockLevelNine,levelNineSpells);DisplayClassName(warlock);">Warlock</button>
+			<button type="button"  onclick="DisplayClassSpells(wizardLevelNine,levelNineSpells);DisplayClassName(wizard);">Wizard</button>
+			<button type="button"  onclick="SetClassSpell(wizard);">Test</button>
+		</div>
+		
+	
+		<div id="SpellList" class="col-12">
+		
+		</div>
+	</div>
+	
+	<script type="text/Javascript">
+	/*==New JS ==*/
+	
+	var level = { 
+		num: 0
+	};
+	
+	function SetLevel(n){
+		level.num = n;
+	};
+	
+	function SetPlayerClass (v){
+		var classId = ['Bard','Cleric', 'Druid','Ranger','Sorcerer','Warlock','Wizard','']
+		document.getElementById("PlayerClass").innerHTML = classId[v];
+	};
+	
+	function SetTitle (n){	//changes header title
+		SetLevel (n);
+		if(level.num===0){
+			document.getElementById("Level").innerHTML='Cantrip';
+			return
+		};
+		document.getElementById("Level").innerHTML='Level '+level.num;
+	};
+	</script>
+	
+	<script>
+	/*==Old JS ==*/
+	function DisplayClassSpells(classSpells, allSpells) {
+		var out ="";
+		var i;
+		var j;
+		for (i=0; i< classSpells.length; i++){
+			for (j=0;j<allSpells.length; j++){
+				if (classSpells[i].name == allSpells[j].name){
+					out += '<div class="Spell Card col-12" id="'+allSpells[j].ID+'">'+
+					'<h1>'+allSpells[j].name+'<span class="icon-'+allSpells[j].school+' Icon"></span></h1>'+
+					'<p>'+
+					'Casting Time: '+ allSpells[j].cast_time + '<br>'+
+					'Range: '+ allSpells[j].range + '<br>'+
+					'Components: '+ allSpells[j].components + '<br>'+
+					'Duration: '+ allSpells[j].duration+ '<br>'+
+					'Description: '+ allSpells[j].description+'</p>'+
+					'</div>';
+				}
+			}
+		}
+		document.getElementById("SpellList").innerHTML=out;
+	}
+	</script>
+	
+	<script>
+	function SetLevel(n){
+		var out="";
+		var t = typeof n;
+		var y = typeof out;
+		if(t!=y){
+			out += 'Level '+n;
+			document.getElementById("Level").innerHTML=out;
+		}
+		if(t==y){
+			document.getElementById("Level").innerHTML=n;
+		}
+	}
+	</script>
+	
+	<script>
+	function DisplayClassName(classes){
+		if(classes==""){
+			var out = '';
+			document.getElementById("ClassName").innerHTML=out;
+		}
+		var out = classes+' ';
+		document.getElementById("ClassName").innerHTML=out;
+	}	
+	</script>
+	
+	<script>
+	function DisplaySpells(spells) {
+		var out ="";
+		var i;
+		for (i=0; i< spells.length; i++){
+			out += '<div class="Spell Card col-12" id="'+spells[i].ID+'">'+
+			'<h1>'+spells[i].name+'<span class="icon-'+spells[i].school+' Icon"></span></h1>'+
+			'<p>'+
+			'Casting Time: '+ spells[i].cast_time + '<br>'+
+			'Range: '+ spells[i].range + '<br>'+
+			'Components: '+ spells[i].components + '<br>'+
+			'Duration: '+ spells[i].duration+ '<br>'+
+			'Description: '+ spells[i].description+'</p>'+
+			'</div>';
+			}
+		document.getElementById("SpellList").innerHTML=out;
+		}
+	</script>
+	
+	<script>
+	function SetClassSpell(className){
+		DisplayClassName(className);
+		var level = document.getElementById("Level");
+		//alert(level.innerHTML);
+		var m = level.innerHTML.split(" ");
+		level = m[1];
+		var levelname=NumberToName(level);
+		console.log(levelname);
+		allSpellList = 'level'+levelname+'Spells';
+		console.log('allSpellList='+allSpellList);
+		var classSpellList = className.toLowerCase();
+		classSpellList += 'Level'+levelname;
+		console.log('classSpellList='+classSpellList);
+		DisplayClassSpells(classSpellList, allSpellList);
+	}
+	</script>
+	<script>
+	function NumberToName(n){
+		var num="";
+		if(n==1){num="One"};
+		if(n==2){num="Two"};
+		if(n==9){num="Nine"};
+		return num;
+	}
+	</script>
+	<script> DisplaySpells(cantripAll);SetLevel('Cantrip')</script>
+
+</body>
+</html>
