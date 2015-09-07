@@ -74,11 +74,12 @@
 	</div>
 	<div id="MainPane" class="col-9 MainPane">
 		<div id="ClassFilter" class="col-12 Filter">
-			<button onclick="DisplayAsModal(all_spells);SetPlayerClass(7);foo();">All</button>
+			<button onclick="DisplayAsModal(all_spells);SetPlayerClass(8);foo();">All</button>
 			<button onclick="DisplayClassSpells(bard, all_spells);SetPlayerClass(0);foo();">Bard</button>
 			<button onclick="DisplayClassSpells(cleric, all_spells);SetPlayerClass(1);foo();">Cleric</button>
 			<button onclick="DisplayClassSpells(druid, all_spells);SetPlayerClass(2);foo();">Druid</button>
 			<button onclick="DisplayClassSpells(ranger, all_spells);SetPlayerClass(3);foo();">Ranger</button>
+            <button onclick="DisplayClassSpells(paladin, all_spells);SetPlayerClass(7);foo();">Paladin</button>
 			<button onclick="DisplayClassSpells(sorcerer, all_spells);SetPlayerClass(4);foo();">Sorcerer</button>
 			<button onclick="DisplayClassSpells(warlock, all_spells);SetPlayerClass(5);foo();">Warlock</button>
 			<button onclick="DisplayClassSpells(wizard, all_spells);SetPlayerClass(6);foo();">Wizard</button>
@@ -113,7 +114,7 @@
 	};
 	
 	function SetPlayerClass (v){
-		var classId = ['Bard','Cleric', 'Druid','Ranger','Sorcerer','Warlock','Wizard','']
+		var classId = ['Bard','Cleric', 'Druid','Ranger','Sorcerer','Warlock','Wizard','Paladin','']
 		document.getElementById("PlayerClass").innerHTML = classId[v]+' ';
 	};
 	
